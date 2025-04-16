@@ -1,0 +1,14 @@
+1). I used AI to help break down the initial project requirements into smaller modules — like CSV parsing, ClickHouse integration, and frontend-backend communication — to plan an efficient development approach.
+
+2). I asked AI to explain how JDBC works with ClickHouse and how to handle large file uploads securely in Spring Boot. This helped me understand the backend configuration better instead of just copy-pasting code.
+
+3). I used AI suggestions to improve the structure of my React components and handle API errors gracefully. The goal was to ensure better UX and maintainable code.
+
+4). While facing an issue with CORS between frontend (on port 5173) and backend (on port 8080), I consulted AI for possible misconfigurations. The insights helped me fix SecurityConfig.java with the correct settings.
+
+5). AI helped me brainstorm the most intuitive sequence for data import/export actions (e.g., data preview before execution), which I validated with peers before implementing.
+
+6). For features like auto-table creation and large file uploads, I used AI to cross-check best practices — ensuring I wasn’t missing any edge cases or security issues.
+
+7). While I wrote the core README myself, I used AI to polish the language and make sure it was complete, beginner-friendly, and consistent in tone.
+
