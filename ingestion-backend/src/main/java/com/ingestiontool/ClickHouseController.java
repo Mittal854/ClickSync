@@ -1,26 +1,29 @@
 package com.ingestiontool;
 
-import com.ingestiontool.ClickHouseUtil;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/clickhouse")
 @CrossOrigin(origins = "http://localhost:5173")
 public class ClickHouseController {
-
     @GetMapping("/tables")
     public ResponseEntity<?> getTables(
             @RequestParam String host,
             @RequestParam String port,
             @RequestParam String database,
             @RequestParam String user
-            // @RequestParam String token
     ) {
         List<String> tables = new ArrayList<>();
         try (Connection conn = ClickHouseUtil.getConnection(host, port, database, user)) {
@@ -35,7 +38,6 @@ public class ClickHouseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Connection failed: " + e.getMessage());
         }
     }
-
     @GetMapping("/columns")
     public ResponseEntity<?> getColumns(
             @RequestParam String host,

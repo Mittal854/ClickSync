@@ -24,20 +24,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ClickHouseIngestionService {
 
-    /**
-     * Ingest data from ClickHouse to CSV file
-     */
     public Map<String, Object> ingestFromClickHouseToCsv(
             String host, String port, String database, String user,
             String table, List<String> columns, String delimiter) throws SQLException, IOException {
 
         int recordCount = 0;
-
-        // Create a temporary file to store the CSV data
         File tempFile = File.createTempFile("clickhouse_export_", ".csv");
         try (Connection conn = ClickHouseUtil.getConnection(host, port, database, user); FileWriter writer = new FileWriter(tempFile); BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-
-            // Build the SELECT query with properly quoted column names
             String columnList = columns.stream()
                     .map(col -> "`" + col.replace("`", "``") + "`")
                     .collect(Collectors.joining(", "));
@@ -45,17 +38,13 @@ public class ClickHouseIngestionService {
             String query = "SELECT " + columnList + " FROM " + table;
 
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
-
-                // Write the header row
                 bufferedWriter.write(String.join(delimiter, columns));
                 bufferedWriter.newLine();
 
-                // Write data rows
                 while (rs.next()) {
                     List<String> row = new ArrayList<>();
                     for (String column : columns) {
                         String value = rs.getString(column);
-                        // Handle null values
                         row.add(value != null ? value : "");
                     }
                     bufferedWriter.write(String.join(delimiter, row));
@@ -73,9 +62,6 @@ public class ClickHouseIngestionService {
         return result;
     }
     
-    /**
-     * Ingest data from CSV file to ClickHouse
-     */
     public Map<String, Object> ingestFromCsvToClickHouse(
             MultipartFile file, String delimiter,
             String host, String port, String database, String user,
